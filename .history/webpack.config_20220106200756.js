@@ -2,28 +2,11 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const isDevelopment = process.env.NODE_ENV !== 'production';
+const webpack = require('webpack');
 
 const { template } = require('lodash')
 
 module.exports = {
-    snapshot: {
-        managedPaths: [path.resolve(__dirname, '../node_modules')],
-        immutablePaths: [],
-        buildDependencies: {
-          hash: true,
-          timestamp: true,
-        },
-        module: {
-          timestamp: true,
-        },
-        resolve: {
-          timestamp: true,
-        },
-        resolveBuildDependencies: {
-          hash: true,
-          timestamp: true,
-        },
-      },
     stats: 'errors-warnings',
     mode:  isDevelopment ? 'development': 'production',
     devtool: isDevelopment ? 'eval-source-map': 'source-map',
@@ -33,6 +16,11 @@ module.exports = {
         filename: 'bundle.js'
     },
     resolve : {
+        alias: {
+            process: 'process/browser',
+            stream: "stream-browserify",
+            zlib: "browserify-zlib"
+        },
         extensions: ['.js', '.jsx'],
         fallback: {
             "stream": require.resolve("stream-browserify"),
@@ -61,6 +49,10 @@ module.exports = {
           },
     },
     plugins : [
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
+            Buffer: ['buffer', 'Buffer'],
+        }),
         isDevelopment && new ReactRefreshWebpackPlugin(),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname,'public', 'index.html' )

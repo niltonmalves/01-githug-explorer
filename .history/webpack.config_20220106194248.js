@@ -6,24 +6,6 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 const { template } = require('lodash')
 
 module.exports = {
-    snapshot: {
-        managedPaths: [path.resolve(__dirname, '../node_modules')],
-        immutablePaths: [],
-        buildDependencies: {
-          hash: true,
-          timestamp: true,
-        },
-        module: {
-          timestamp: true,
-        },
-        resolve: {
-          timestamp: true,
-        },
-        resolveBuildDependencies: {
-          hash: true,
-          timestamp: true,
-        },
-      },
     stats: 'errors-warnings',
     mode:  isDevelopment ? 'development': 'production',
     devtool: isDevelopment ? 'eval-source-map': 'source-map',
@@ -34,31 +16,12 @@ module.exports = {
     },
     resolve : {
         extensions: ['.js', '.jsx'],
-        fallback: {
-            "stream": require.resolve("stream-browserify"),
-            "url": require.resolve("url/"),
-            "querystring": require.resolve("querystring-es3"),
-            "buffer": require.resolve("buffer/"),
-            "fs": false,
-            "tls": false,
-            "net": false,
-            "path": false,
-            "zlib": false,
-            "http": false,
-            "https": false,
-            "stream": false,
-            "crypto": require.resolve("crypto-browserify"),
-            "crypto-browserify": require.resolve('crypto-browserify'),
-            "path": require.resolve("path-browserify")
-          }
+        
 
     },
     devServer: {
         static: path.resolve(__dirname, 'public'),
         hot: true,
-        client: {
-            overlay: true,
-          },
     },
     plugins : [
         isDevelopment && new ReactRefreshWebpackPlugin(),
