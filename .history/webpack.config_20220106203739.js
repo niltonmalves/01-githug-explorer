@@ -4,6 +4,7 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 const { template } = require('lodash')
+const nrwlConfig = require("@nrwl/react/plugins/webpack.js");
 
 module.exports =  {
     stats: 'errors-warnings',
@@ -33,7 +34,11 @@ module.exports =  {
             "crypto-browserify": require.resolve('crypto-browserify'),
             "path": require.resolve("path-browserify")
           },
-          
+          alias: {
+            ...config.resolve.alias,
+            stream: require.resolve('stream-browserify'),
+            zlib: require.resolve('browserify-zlib'),  
+          }
 
     },
     devServer: {
@@ -44,6 +49,7 @@ module.exports =  {
           },
     },
     plugins : [
+        nrwlConfig(config),
         isDevelopment && new ReactRefreshWebpackPlugin(),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname,'public', 'index.html' )
